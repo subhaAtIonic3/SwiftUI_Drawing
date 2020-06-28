@@ -10,17 +10,17 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State private var amount = 100.0
-    @State private var thickness = 10.0
+    @State private var amount: CGFloat = 100.0
+    @State private var thickness: CGFloat = 10.0
     @State private var hue = 0.6
     
     var body: some View {
         VStack {
-            Arrow(thickness: CGFloat(amount))
-                .stroke(Color(hue: hue, saturation: 1, brightness: 1), style: StrokeStyle(lineWidth: CGFloat(thickness), lineCap: .round, lineJoin: .round))
+            Arrow(distance: amount)
+                .stroke(Color(hue: hue, saturation: 1, brightness: 1), style: StrokeStyle(lineWidth: thickness, lineCap: .round, lineJoin: .round))
                 .onTapGesture {
                     withAnimation{
-                        self.amount = Double.random(in: 0.0...150.0)
+                        self.amount = CGFloat.random(in: 0.0...150.0)
                     }
                 }
             .frame(width: 300, height: 400)
@@ -47,11 +47,11 @@ struct ContentView_Previews: PreviewProvider {
 
 struct Arrow: Shape {
     
-    var thickness: CGFloat
+    var distance: CGFloat
     
     var animatableData: CGFloat {
-        get {thickness}
-        set {self.thickness = newValue}
+        get {distance}
+        set {self.distance = newValue}
     }
     
     func path(in rect: CGRect) -> Path {
@@ -61,11 +61,11 @@ struct Arrow: Shape {
         
         path.addLine(to: CGPoint(x: rect.midX, y: rect.minY))
         path.addLine(to: CGPoint(x: rect.maxX, y: rect.midY))
-        path.addLine(to: CGPoint(x: rect.maxX - thickness, y: rect.midY))
+        path.addLine(to: CGPoint(x: rect.maxX - distance, y: rect.midY))
         
-        path.addLine(to: CGPoint(x: rect.maxX - thickness, y: rect.maxY))
-        path.addLine(to: CGPoint(x: rect.midX - (thickness / 2), y: rect.maxY))
-        path.addLine(to: CGPoint(x: rect.midX - (thickness / 2), y: rect.midY))
+        path.addLine(to: CGPoint(x: rect.maxX - distance, y: rect.maxY))
+        path.addLine(to: CGPoint(x: rect.midX - (distance / 2), y: rect.maxY))
+        path.addLine(to: CGPoint(x: rect.midX - (distance / 2), y: rect.midY))
         
         path.addLine(to: CGPoint(x: rect.minX, y: rect.midY))
         
